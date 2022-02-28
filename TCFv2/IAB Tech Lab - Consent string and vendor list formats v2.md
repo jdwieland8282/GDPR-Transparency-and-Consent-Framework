@@ -493,7 +493,7 @@ CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEg
       </td>
     </tr>
     <tr>
-     <td>IsServiceSpecific</br></br>:loudspeaker: Not used in TCF Canada</td>
+     <td>IsServiceSpecific</br></br>:loudspeaker: <u>Not used in TCF Canada</u></td>
       <td>1 bit</td>
       <td><code>1</code> true<br /><code>0</code> false</td>
       <td>
