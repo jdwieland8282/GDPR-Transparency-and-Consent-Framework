@@ -8,6 +8,7 @@
 
  * [Version History:](#version-history)
  * [Introduction](#introduction)
+   + [TCF Canada](#tcf-canada-loudspeaker)
    + [Audience](#audience)
    + [Relevant Documents](#relevant-documents)
    + [About the Transparency & Consent Framework](#about-the-transparency--consent-framework)
@@ -90,6 +91,18 @@ IAB Europe established the TCF to support compliance with the GDPR in the contex
 Prescribed use of the TCF may support compliance with the GDPR, but the real benefit to the digital advertising ecosystem is a safer Internet for consumers, and more reliable data for brands and publishers. As adoption of the TCF increases, compliance becomes more scalable and data becomes more meaningful.
 
 To participate in the use of the TCF, vendors must make a public attestation of compliance with the [Policies](https://iabeurope.eu/iab-europe-transparency-consent-framework-policies/) for using it. To have transparency and consent established and signaled status for your online services stored in a global database, apply to be added to the [GVL](#the-global-vendor-list). To play a role in creating a TC String for signaling status on transparency and user consent, sign up with IAB Europe to become a CMP. CMPs must follow technical standards provided in this document for creating TC Strings in compliance with TCF [Policies](https://iabeurope.eu/iab-europe-transparency-consent-framework-policies/). They must also follow technical standards guidance for using the CMP API specified in this document to receive and process information provided in a TC String.
+
+### TCF Canada (:loudspeaker:)
+
+This specification is also used by TCF Canada. As described above, the original TCF was designed to support compliance of the GDPR in Europe. As such, when reading the specification from a TCF Canada perspective, please consider the following:
+
+*  References to the GDPR should be ignored
+*  References to "consent" should be read as "express consent"
+*  References to "legitimate interest" should be read as "implied consent"
+*  References to "special feature opt ins" should be read as "special feature express consent"
+*  References to a "Right to Object" should be read as a user exercising an "Objection"
+
+The adoption of this specification is virtually identical for TCF Canada - look out for differences in this document, which are highlighted using the 📢 icon.
 
 ### Audience
 
@@ -183,7 +196,7 @@ A TC String that contains positive consent signals must not be created before cl
 
 ### What is the scope for a TC String?
 
-CMPs must operate in a **service-specific** or group-specific configuration. A TC String in this context is applicable only on a service or group of services, for example the site(s) or app(s) on which it is running. One is created for every user on a given site/app or group of sites/apps. They may contain _**[Publisher restrictions](#what-are-publisher-restrictions)**_ and a _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment when returned by the CMP API.
+CMPs must operate in a **service-specific** or group-specific configuration. A TC String in this context is applicable only on a service or group of services, for example the site(s) or app(s) on which it is running. One is created for every user on a given site/app or group of sites/apps. They may contain _**[Publisher restrictions](#what-are-publisher-restrictions)**_ and a _**[Publisher TC](#publisher-purposes-transparency-and-consent-eu)**_ segment when returned by the CMP API.
 
 
 ### What happened to Global Scope and Out of Band?
@@ -335,7 +348,7 @@ The service making the call must replace the macros with appropriate values desc
 
  If a publisher is operating a CMP within a jurisdiction that does not require consent to store and/or access information on a device and, therefore, does not ask for consent on behalf of a vendor for a purpose 1, the CMP will write the corresponding bit in the _**PurposesConsent**_ field to `0`. Even though it is valid within that jurisdiction to not request consent for Purpose 1, a vendor would interpret that `0` as a “no consent” signal and have no way of knowing that consent was not required in the jurisdiction in which the publisher operates.  This lack of transparency would, ultimately, cause losses in ad revenue for that publisher.
 
-To accommodate cases where Purpose 1 is governed differently for consent depending on the jurisdiction, a TC String is transparent about the publisher’s operating governance and whether or not Purpose 1 was disclosed to a user. The vendor can then use these details to make a determination about whether they have sufficient legal bases for personal data processing in that given context. To support this, there are two fields in a TC String: _**PublisherCC**_, which represents the publisher’s country code and a flag for whether any disclosure has been offered on Purpose 1 named _**PurposeOneTreatment**_. Details for each field are listed among [the fields used in the TC String](#tc-string-format).
+To accommodate cases where Purpose 1 is governed differently for consent depending on the jurisdiction, a TC String is transparent about the publisher’s operating governance and whether or not Purpose 1 was disclosed to a user. The vendor can then use these details to make a determination about whether they have sufficient legal bases for personal data processing in that given context. To support this, there are two fields in a TC String: _**PublisherCC**_, which represents the publisher’s country code and a flag for whether any disclosure has been offered on Purpose 1 named _**PurposeOneTreatment**_. Details for each field are listed among [the fields used in the TC String](#tc-string-format-eu).
 
 ### What happened to Created and LastUpdated?
 
@@ -1926,10 +1939,10 @@ The registration process is described here: [https://iabeurope.eu/tcf](https://i
 *   A list of Vendors and their:
     *   Numeric ID which is incrementally assigned and never re-used – deleted Vendors are just marked as deleted.
     *   Name.
-    *   List of Purposes for which they are requesting consent (:loudspeaker: express consent for Canada).
-    *   List of Purposes for which they require to be transparently disclosed as their legitimate interest (:loudspeaker: implied consent for Canada).
-    *   List of Purposes they have the flexibility to either use a consent (:loudspeaker: express consent for Canada) or a legitimate interest (:loudspeaker: implied consent for Canada) legal basis.
-    *   List of Special Purposes to transparently disclose as their legitimate interest (:loudspeaker: implied consent for Canada) that a user has no right to object.
+    *   List of Purposes for which they are requesting consent.
+    *   List of Purposes for which they require to be transparently disclosed as their legitimate interest.
+    *   List of Purposes they have the flexibility to either use a consent or a legitimate interest legal basis.
+    *   List of Special Purposes to transparently disclose as their legitimate interest that a user has no right to object.
     *   List of Features they use across Purposes.
     *   List of Special Features they use across Purposes.
     *   GDPR/privacy policy page URL.
