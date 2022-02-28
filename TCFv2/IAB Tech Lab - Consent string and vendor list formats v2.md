@@ -743,7 +743,7 @@ CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEg
     </tr>
     <tr style="background-color:#000;color:#FFF;">
       <td colspan="4">
-        <strong>Vendor Legitimate Interest Section <br/><br/> :loudspeaker: <i>Section name changed in TCF Canada</i></strong>
+        <strong>Vendor Legitimate Interest Section</strong> <br/><br/> :loudspeaker: <i>Section name changed in TCF Canada</i>
       </td>
     </tr>
     <tr>
@@ -1042,7 +1042,7 @@ CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEg
 
 The _**DisclosedVendors**_ is an optional TC String segment that records which vendors have been disclosed to a given user by a CMP. It may be used by a CMP while [storing](#how-should-a-transparency--consent-string-be-stored) TC Strings, but must not be included in the TC String when returned by the CMP API.
 
-<br/><br/> 📢 <i>Not used in TCF Canada</i>
+📢 <i>Not used in TCF Canada</i>
 
 <table>
   <thead>
@@ -1277,7 +1277,7 @@ The _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment i
       </td>
     </tr>
     <tr>
-      <td>CustomPurposesConsent</td>
+      <td>CustomPurposesConsent <br/><br/> 📢 <i>Field name changed in TCF Canada</i></td>
       <td>NumCustomPurposes</td>
       <td>
         One bit for each Custom Purpose:
@@ -1292,7 +1292,7 @@ The _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment i
       </td>
     </tr>
     <tr>
-      <td>CustomPurposesLITransparency</td>
+      <td>CustomPurposesLITransparency <br/><br/> 📢 <i>Field name changed in TCF Canada</i></td>
       <td>NumCustomPurposes</td>
       <td>
         One bit for each Custom Purpose:<br /><code>1</code> legitimate
@@ -1867,13 +1867,13 @@ The _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment i
       </td>
     </tr>
     <tr>
-      <td>CustomPurposesConsent</td>
+      <td>CustomPurposesExpressConsent</td>
       <td>NumCustomPurposes</td>
       <td>
         One bit for each Custom Purpose:
         <p>
-          <code>1</code> Consent<br />
-          <code>0</code> No Consent
+          <code>1</code> Express Consent<br />
+          <code>0</code> No Express Consent
         </p>
       </td>
       <td>
@@ -1882,16 +1882,16 @@ The _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment i
       </td>
     </tr>
     <tr>
-      <td>CustomPurposesLITransparency</td>
+      <td>CustomPurposesImpliedConsent</td>
       <td>NumCustomPurposes</td>
       <td>
-        One bit for each Custom Purpose:<br /><code>1</code> legitimate
-        interest established<br /><br /><code>0</code> legitimate interest
+        One bit for each Custom Purpose:<br /><code>1</code> implied
+        consent established<br /><br /><code>0</code> implied consent
         was <u><strong>NOT</strong></u> established or it was established
-        but user exercised their “Right to Object” to the Custom Purpose
+        but user exercised an Objection to the Custom Purpose
       </td>
       <td>
-        The legitimate Interest disclosure establishment value for each
+        The implied consent disclosure establishment value for each
         CustomPurposeId from <code>1</code> to NumberCustomPurposes
       </td>
     </tr>
