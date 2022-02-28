@@ -359,7 +359,7 @@ Post 30 September 2020, [v1.x strings were considered invalid](https://iabeurope
 Note: TCF version 2.0 introduces [“Publisher Restrictions”](#what-are-publisher-restrictions), which, if exhausted by a publisher, could result in TC strings that are larger than the size limit for cookies. While this possibility is remote, it should be guarded against – a CMP should work with a publisher to help them accomplish their goals. CMPs may need to take this into consideration when deciding on the storage mechanism for those TC Strings.
 
 
-### TC String Format
+### TC String Format (EU)
 
 There are 3 distincts TC String segments that are joined together on a “dot” character.  They are:
 
