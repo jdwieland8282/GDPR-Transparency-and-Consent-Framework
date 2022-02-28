@@ -383,6 +383,8 @@ A TC String must contain a Core TC String and may optionally contain a _**[Publi
 CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEgAA.argAC0gAAAAAAAAAAAA
 ```
 
+Note the TC String format for the EU and Canada are virtually identical. Differences for TCF Canada are highlighed below by the 📢 icon.
+
  #### The Core String (EU)
 
  The following fields are stored in big-endian format. Bit numberings are left-to-right.
@@ -1331,6 +1333,8 @@ A TC String must contain a Core TC String and may optionally contain a _**[Publi
 CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEgAA.argAC0gAAAAAAAAAAAA
 ```
 
+Note the TC String format for the EU and Canada are virtually identical. Differences for TCF Canada are highlighed below by the 📢 icon.
+
  #### The Core String (Canada)
 
  The following fields are stored in big-endian format. Bit numberings are left-to-right.
@@ -1463,7 +1467,7 @@ CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEg
       </td>
     </tr>
     <tr>
-      <td>SpecialFeatureExpressConsent</td>
+      <td>SpecialFeatureExpressConsent <br/><br/><i>:loudspeaker: Field name changed</i></td>
       <td>12 bits</td>
       <td>
         One bit for each Special Feature:<br /><br /><code>1</code> Opted
@@ -1483,7 +1487,7 @@ CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEg
       </td>
     </tr>
     <tr>
-      <td>PurposesExpressConsent</td>
+      <td>PurposesExpressConsent <br/><br/><i>:loudspeaker: Field name changed</i></td>
       <td>24 bits</td>
       <td>
         One bit for each Purpose:<br /><br /><code>1</code> 
@@ -1501,7 +1505,7 @@ CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEg
       </td>
     </tr>
     <tr>
-      <td>PurposesImpliedConsent</td>
+      <td>PurposesImpliedConsent <br/><br/><i>:loudspeaker: Field name changed</i></td>
       <td>24 bits</td>
       <td>
         One bit for each Purpose:<br /><code>1</code> implied consent
@@ -1642,7 +1646,7 @@ CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEg
     </tr>
     <tr style="background-color:#000;color:#FFF;">
       <td colspan="4">
-        <strong>Vendor Implied Consent Section</strong>
+        <strong>Vendor Implied Consent Section</strong> <br/><br/><i>:loudspeaker: Section name changed</i>
       </td>
     </tr>
     <tr>
@@ -1812,7 +1816,7 @@ The _**[Publisher TC](#publisher-purposes-transparency-and-consent-canada)**_ se
       </td>
     </tr>
     <tr>
-      <td>PubPurposesExpressConsent</td>
+      <td>PubPurposesExpressConsent <br/><br/><i>:loudspeaker: Field name changed</i></td>
       <td>24 bits</td>
       <td>
         One bit for each Purpose:
@@ -1833,7 +1837,7 @@ The _**[Publisher TC](#publisher-purposes-transparency-and-consent-canada)**_ se
       </td>
     </tr>
     <tr>
-      <td>PubPurposesImpliedConsent</td>
+      <td>PubPurposesImpliedConsent <br/><br/><i>:loudspeaker: Field name changed</i></td>
       <td>24 bits</td>
       <td>
         One bit for each Purpose:<br /><code>1</code> implied consent
@@ -1869,7 +1873,7 @@ The _**[Publisher TC](#publisher-purposes-transparency-and-consent-canada)**_ se
       </td>
     </tr>
     <tr>
-      <td>CustomPurposesExpressConsent</td>
+      <td>CustomPurposesExpressConsent <br/><br/><i>:loudspeaker: Field name changed</i></td>
       <td>NumCustomPurposes</td>
       <td>
         One bit for each Custom Purpose:
@@ -1884,7 +1888,7 @@ The _**[Publisher TC](#publisher-purposes-transparency-and-consent-canada)**_ se
       </td>
     </tr>
     <tr>
-      <td>CustomPurposesImpliedConsent</td>
+      <td>CustomPurposesImpliedConsent <br/><br/><i>:loudspeaker: Field name changed</i></td>
       <td>NumCustomPurposes</td>
       <td>
         One bit for each Custom Purpose:<br /><code>1</code> implied
