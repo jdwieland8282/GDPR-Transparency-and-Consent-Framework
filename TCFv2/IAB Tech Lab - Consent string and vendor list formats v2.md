@@ -1305,6 +1305,952 @@ The _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment i
   </tbody>
 </table>
 
+### TC String Format (Canada)
+
+There are 3 distincts TC String segments that are joined together on a “dot” character.  They are:
+
+*   The core vendor transparency and consent details
+*   Disclosed vendors
+*   Publisher purposes transparency and consent for their own data uses.
+
+The _**[Core String](#the-core-string)**_ is always required and comes first and includes all the details required for communicating basic vendor transparency and consent.
+
+```
+COw4XqLOw4XqLAAAAAENAXCAAAAAAAAAAAAAAAAAAAAA.IFukWSQgAIQwgI0QEByFAAAAeIAACAIgSAAQAIAgEQACEABAAAgAQFAEAIAAAGBAAgAAAAQAIFAAMCQAAgAAQiRAEQAAAAANAAIAAggAIYQFAAARmggBC3ZCYzU2yIA.QFukWSQgAIQwgI0QEByFAAAAeIAACAIgSAAQAIAgEQACEABAAAgAQFAEAIAAAGBAAgAAAAQAIFAAMCQAAgAAQiRAEQAAAAANAAIAAggAIYQFAAARmggBC3ZCYzU2yIA.YAAAAAAAAAAAAAAAAAA
+```
+A TC String must contain a Core TC String and may optionally contain a _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment :
+
+[ _**[Core String](#the-core-string)**_ ].[ _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ ]
+
+```
+CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEgAA.argAC0gAAAAAAAAAAAA
+```
+
+ #### The Core String
+
+ The following fields are stored in big-endian format. Bit numberings are left-to-right.
+
+<table>
+  <thead>
+    <tr style="background-color:#000;color:#FFF;">
+      <td><strong>Field Name</strong></td>
+      <td><strong>Bits</strong></td>
+      <td><strong>Value(s)</strong></td>
+      <td><strong>Notes</strong></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Version</td>
+      <td>6 bits</td>
+      <td>Version number of the encoding format</td>
+      <td>the value is 2 for this format.</td>
+    </tr>
+    <tr>
+      <td>Created</td>
+      <td>36 bits</td>
+      <td>
+        Epoch time format when TC String was last updated (must be updated any time a value is changed)
+      </td>
+      <td rowspan="2">
+       To create a timestamp in JavaScript: <code>Math.round((new Date(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate(), 0, 0, 0)).getTime()/100)</code>. Also, the timestamp must be based in UTC time in order to get a consistent millisecond value across the time zones.
+       <br><br>
+       Note : <a href="#what-happened-to-created-and-lastupdated">What happened to Created and LastUpdated?</a>
+      </td>
+    </tr>
+    <tr>
+      <td>LastUpdated</td>
+      <td>36 bits</td>
+      <td>
+        Epoch time format when TC String was last updated (must be updated any time a value is changed)
+      </td>
+    </tr>
+    <tr>
+      <td>CmpId</td>
+      <td>12 bits</td>
+      <td>
+        Consent Management Platform ID that last updated the TC String
+      </td>
+      <td>
+        A unique ID will be assigned to each Consent Management Platform.
+      </td>
+    </tr>
+    <tr>
+      <td>CmpVersion</td>
+      <td>12 bits</td>
+      <td>
+        Consent Management Platform version of the CMP that last updated
+        this TC String
+      </td>
+      <td>
+        Each change to a CMP should increment their internally assigned
+        version number as a record of which version the user gave consent
+        and transparency was established.
+      </td>
+    </tr>
+    <tr>
+      <td>ConsentScreen</td>
+      <td>6 bits</td>
+      <td>
+        CMP Screen number at which consent was given for a user with the CMP
+        that last updated this TC String
+      </td>
+      <td>
+        The number is a CMP internal designation and is CmpVersion specific.
+        The number is used for identifying on which screen a user gave
+        consent as a record.
+      </td>
+    </tr>
+    <tr>
+      <td>ConsentLanguage</td>
+      <td>12 bits</td>
+      <td>
+        Two-letter
+        <a href="https://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a>
+        language code in which the CMP UI was presented
+      </td>
+      <td>Each letter is encoded as 6 bits, a=0..z=25.</td>
+    </tr>
+    <tr>
+      <td>VendorListVersion</td>
+      <td>12 bits</td>
+      <td>
+        Number corresponds to <a href="#the-global-vendor-list">GVL</a>
+        <code>vendorListVersion</code>
+      </td>
+      <td>
+        Version of the <a href="#the-global-vendor-list">GVL</a> used to
+        create this TC String.
+      </td>
+    </tr>
+    <tr>
+      <td>TcfPolicyVersion</td>
+      <td>6 bits</td>
+      <td>
+        Version of policy used within
+        <a href="#the-global-vendor-list">GVL</a>
+      </td>
+      <td>
+        From the corresponding field in the
+        <a href="#the-global-vendor-list">GVL</a> that was used for
+        obtaining consent. A new policy version invalidates existing strings
+        and requires CMPs to re-establish transparency and consent from
+        users.
+      </td>
+    </tr>
+    <tr>
+      <td>IsServiceSpecific</td>
+      <td>1 bit</td>
+      <td><code>1</code> true<br /><code>0</code> false</td>
+      <td>
+       This field must always have the value of <code>1</code>. When a Vendor encounters a TC String with <code>IsServiceSpecific=0</code> then it is considered invalid.
+      </td>
+    </tr>
+    <tr>
+      <td>UseNonStandardStacks</td>
+      <td>1 bit</td>
+      <td>
+        <code>1</code> CMP used non-IAB standard stacks during consent
+        gathering<br /><code>0</code> IAB standard stacks were used
+      </td>
+      <td>
+        Setting this to 1 means that a publisher-run CMP – that is still IAB
+        Europe registered – is using customized Stack descriptions and not
+        the standard stack descriptions defined in the
+        <a
+          href="https://iabeurope.eu/iab-europe-transparency-consent-framework-policies/"
+          >Policies</a
+        >
+        (Appendix A section E). A CMP that services multiple publishers sets
+        this value to <code>0</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>SpecialFeatureOptIns</td>
+      <td>12 bits</td>
+      <td>
+        One bit for each Special Feature:<br /><br /><code>1</code> Opted
+        in<br /><code>0</code> Not opted in
+      </td>
+      <td>
+        The TCF
+        <a
+          href="https://iabeurope.eu/iab-europe-transparency-consent-framework-policies/"
+          >Policies</a
+        >
+        designates certain Features as “special” which means a CMP must
+        afford the user a means to opt in to their use. These “Special
+        Features” are published and numerically identified in the
+        <a href="#the-global-vendor-list">Global Vendor List</a> separately
+        from normal Features.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        PurposesConsent
+        <p>
+          (renamed from PurposesAllowed)
+        </p>
+      </td>
+      <td>24 bits</td>
+      <td>
+        One bit for each Purpose:<br /><br /><code>1</code>
+        Consent<br /><code>0</code> No Consent
+      </td>
+      <td>
+        The user’s consent value for each Purpose established on the legal
+        basis of consent.<br /><br />The Purposes are numerically identified
+        and published in the
+        <a href="#the-global-vendor-list">Global Vendor List</a>. From left
+        to right, Purpose 1 maps to the <code>0</code>th bit, purpose 24
+        maps to the bit at index 23. Special Purposes are a different ID
+        space and not included in this field.
+      </td>
+    </tr>
+    <tr>
+      <td>PurposesLITransparency</td>
+      <td>24 bits</td>
+      <td>
+        One bit for each Purpose:<br /><code>1</code> legitimate interest
+        established<br /><br /><code>0</code> legitimate interest was
+        <u><strong>NOT</strong></u> established or it was established but
+        user exercised their “Right to Object” to the Purpose
+      </td>
+      <td>
+        The Purpose’s transparency requirements are met for each Purpose on
+        the legal basis of legitimate interest and the user has not
+        exercised their “Right to Object” to that Purpose.
+        <p>
+          By default or if the user has exercised their “Right to Object” to
+          a Purpose, the corresponding bit for that Purpose is set to
+          <code>0</code>. From left to right, Purpose 1 maps to the 0th bit,
+          purpose 24 maps to the bit at index 23. Special Purposes are a
+          different ID space and not included in this field.
+        </p>
+      </td>
+    </tr>
+    <tr style="background-color:#000;color:#FFF;">
+      <td colspan="4">
+        <strong>Specific Jurisdiction Disclosures</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>PurposeOneTreatment</td>
+      <td>1 bit</td>
+      <td>
+        <code>1</code> Purpose 1 was NOT disclosed at all.<br /><br /><code
+          >0</code
+        >
+        Purpose 1 was disclosed commonly as consent as expected by the
+        <a
+          href="https://iabeurope.eu/iab-europe-transparency-consent-framework-policies/"
+          >Policies</a
+        >.
+      </td>
+      <td>
+        CMPs can use the PublisherCC field to indicate the legal jurisdiction the publisher is under to help vendors determine whether the vendor needs consent for Purpose 1.
+      </td>
+    </tr>
+    <tr>
+      <td>PublisherCC</td>
+      <td>12 bits</td>
+      <td>
+        <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"
+          >ISO 3166-1 alpha-2 code</a
+        >
+      </td>
+      <td>
+        The country code of the country that determines legislation of
+        reference. Commonly, this corresponds to the country in which the
+        publisher’s business entity is established.
+        <p>
+          Each letter is encoded as 6 bits, a=0..z=25.
+        </p>
+      </td>
+    </tr>
+    <tr style="background-color:#000;color:#FFF;">
+      <td colspan="4"><strong>Vendor Consent Section</strong></td>
+    </tr>
+    <tr>
+      <td>MaxVendorId</td>
+      <td>16 bits</td>
+      <td>
+        The maximum Vendor ID that is represented in the following bit field
+        or range encoding.
+      </td>
+      <td>
+        Because this section can be a variable length, this indicates the
+        last ID of the section so that a decoder will know when it has
+        reached the end.
+      </td>
+    </tr>
+    <tr>
+      <td>IsRangeEncoding</td>
+      <td>1 bit</td>
+      <td>
+        <code>1</code> Range<br />
+        <code>0</code> BitField
+      </td>
+      <td>
+        The encoding scheme used to encode the IDs in the section – Either a
+        BitField Section or Range Section follows. Encoding logic should
+        choose the encoding scheme that results in the smaller output size
+        for a given set.
+      </td>
+    </tr>
+    <tr style="background-color:#999;">
+      <td colspan="2"><strong>BitField Section</strong></td>
+      <td colspan="2">
+        <strong>Encodes one consent bit per Vendor ID</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>BitField</td>
+      <td>MaxVendorId bits</td>
+      <td>
+        One bit for each Vendor:<br /><br /><code>1</code>
+        Consent<br /><code>0</code> No Consent
+      </td>
+      <td>
+        The consent value for each Vendor ID from <code>1</code> to
+        MaxVendorId where index <code>0</code> is Vendor ID
+        <code>1</code>.<br /><br />Set the bit corresponding to a given
+        vendor to <code>1</code> if the user has consented to this vendor
+        processing their personal data
+      </td>
+    </tr>
+    <tr style="background-color:#999;">
+      <td><strong>Range Section</strong></td>
+      <td></td>
+      <td></td>
+      <td>
+        <strong
+          >Encodes range groups of Vendor IDs who have received consent from
+          a user</strong
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>NumEntries</td>
+      <td>12 bits</td>
+      <td colspan="2">Number of RangeEntry sections to follow</td>
+    </tr>
+    <tr style="border-top:5px solid black;">
+      <td colspan="2">RangeEntry (repeated NumEntries times)</td>
+      <td colspan="2">
+        A single or range of Vendor ID(s) who have received consent. If a
+        Vendor ID is not within the bounds of the ranges then the vendor is
+        assumed to have “No Consent”.
+      </td>
+    </tr>
+    <tr>
+      <td>IsARange</td>
+      <td>1 bit</td>
+      <td>
+        <code>1</code> Vendor ID range<br />
+        <code>0</code> Single Vendor ID
+      </td>
+      <td>
+        If more than one Vendor ID is included in this RangeEntry then this
+        describes a range of Vendor IDs and this value is 1. If only one
+        Vendor ID is included then the value is 0.
+      </td>
+    </tr>
+    <tr>
+      <td>StartOrOnlyVendorId</td>
+      <td>16 bits</td>
+      <td>
+        The first ID of an inclusive contiguous ascending-order series of
+        Vendor IDs even if the series is only a cardinality of 1.
+      </td>
+      <td>
+        This is the first or only Vendor ID with consent in this RangeEntry.
+      </td>
+    </tr>
+    <tr>
+      <td>EndVendorId</td>
+      <td>16 bits</td>
+      <td>
+        The last ID of the inclusive contiguous ascending-order series of
+        Vendor IDs started with StartOrOnlyVendorId but only if that series
+        has a cardinality greater than 1, otherwise this field is omitted.
+      </td>
+      <td>
+        The end of the series of Vendor IDs – this is omitted if
+        <code>IsARange=0</code>.
+      </td>
+    </tr>
+    <tr style="border-bottom:5px solid black;border-top:2px solid #999;">
+      <td colspan="4">
+        <strong>Repeated RangeEntry sections to NumEntries...</strong>
+      </td>
+    </tr>
+    <tr style="background-color:#000;color:#FFF;">
+      <td colspan="4">
+        <strong>Vendor Legitimate Interest Section</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>MaxVendorId</td>
+      <td>16 bits</td>
+      <td>
+        The maximum Vendor ID that is represented in the following bit field
+        or range encoding.
+      </td>
+      <td>
+        Because this section can be a variable length, this indicates the
+        last ID of the section so that a decoder will know when it has
+        reached the end.
+      </td>
+    </tr>
+    <tr>
+      <td>IsRangeEncoding</td>
+      <td>1 bit</td>
+      <td>
+        <code>1</code> Range<br />
+        <code>0</code> BitField
+      </td>
+      <td>
+        The encoding scheme used to encode the IDs in the section – Either a
+        BitField Section or Range Section follows. Encoding logic should
+        encode with the encoding scheme that results in the smaller output
+        size for a given set.
+      </td>
+    </tr>
+    <tr style="background-color:#999;">
+      <td colspan="2"><strong>BitField Section</strong></td>
+      <td colspan="2">
+        <strong>Encodes one legitimate interest bit per Vendor ID</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>BitField</td>
+      <td>MaxVendorId bits</td>
+      <td>
+        <p>One bit for each Vendor:</p>
+        <p>
+          <code>1</code> Legitimate Interest established<br /><code>0</code>
+          Legitimate Interest not established or the user exercised their
+          “Right to Object”
+        </p>
+      </td>
+      <td>
+        The legitimate interest value for each Vendor ID from
+        <code>1</code> to MaxVendorId where index <code>0</code> is Vendor
+        ID <code>1</code>.
+        <p>
+          Set the bit corresponding to a given vendor to <code>1</code> if
+          the CMP has established transparency for that vendor's legitimate
+          interest disclosures for one or more Purposes (including Special Purposes).
+        </p>
+        <p>
+          If a user exercises their “Right To Object” to a vendor’s
+          processing based on a legitimate interest, then that vendor’s bit
+          must be set to <code>0</code>. For vendors that register for Special
+          Purposes only (no other Purposes) and have been displayed by
+          the CMP the value must be set to <code>1</code>. Note:
+          Special Purposes are displayed for transparency only and do not
+          enable user choice.
+        </p>
+      </td>
+    </tr>
+    <tr style="background-color:#999;">
+      <td colspan="2"><strong>Range Section</strong></td>
+      <td colspan="2">
+        <strong
+          >Encodes range groups of Vendor IDs who have established their
+          legitimate interest disclosures with a user</strong
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>NumEntries</td>
+      <td>12 bits</td>
+      <td colspan="2">Number of RangeEntry sections to follow</td>
+    </tr>
+    <tr style="border-top:5px solid black;">
+      <td colspan="2">RangeEntry (repeated NumEntries times)</td>
+      <td colspan="2">
+        A single or range of Vendor ID(s) who have established transparency
+        for their legitimate interest disclosures with the user. If a Vendor
+        ID is not within the bounds of the ranges then they have not
+        established that transparency.
+      </td>
+    </tr>
+    <tr>
+      <td>IsARange</td>
+      <td>1 bit</td>
+      <td>
+        <code>1</code> Vendor ID range<br />
+        <code>0</code> Single Vendor ID
+      </td>
+      <td>
+        If more than one Vendor ID is included in this RangeEntry then this
+        describes a range of Vendor IDs and this value is <code>1</code>. If
+        only one Vendor ID is included then the value is <code>0</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>StartOrOnlyVendorId</td>
+      <td>16 bits</td>
+      <td>
+        The first ID of an inclusive contiguous ascending-order series of
+        Vendor IDs even if the series is only a cardinality of 1.
+      </td>
+      <td>
+        This is the first or only Vendor ID with legitimate interest
+        disclosures established in this RangeEntry.
+      </td>
+    </tr>
+    <tr>
+      <td>EndVendorId</td>
+      <td>16 bits</td>
+      <td>
+        The last ID of the inclusive contiguous ascending-order series of
+        Vendor IDs started with StartOrOnlyVendorId but only if that series
+        has a cardinality greater than <code>1</code>, otherwise this field
+        is omitted.
+      </td>
+      <td>
+        The end of the series of Vendor IDs – this is omitted if
+        <code>IsARange=0</code>.
+      </td>
+    </tr>
+    <tr style="border-bottom:5px solid black;border-top:2px solid #999;">
+      <td colspan="4">
+        <strong>Repeated RangeEntry sections to NumEntries...</strong>
+      </td>
+    </tr>
+    <tr style="background-color:#000;color:#FFF;">
+      <td><strong>Publisher Restrictions Section</strong></td>
+      <td colspan="3">
+        <strong
+          >The content of this section is optional EXCEPT for
+          NumPubRestrictions. Encodes any number of single or range
+          restriction entries</strong
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>NumPubRestrictions</td>
+      <td>12 bits</td>
+      <td colspan="2">
+        Number of restriction records to follow.<br /><br /><strong
+          style="color:red;"
+          >Value is required</strong
+        >
+        even if it is <code>0</code>
+      </td>
+    </tr>
+    <tr style="border-top:5px solid black;">
+      <td colspan="3">
+        PubRestrictionEntry (Repeated NumPubRestrictions times)
+      </td>
+      <td>
+        Each Publisher Restriction Entry is made up of three parts: Purpose
+        ID, Restriction Type and, List of Vendor IDs under that Purpose
+        restriction.
+      </td>
+    </tr>
+    <tr>
+      <td>PurposeId</td>
+      <td>6 bits</td>
+      <td>Purpose ID</td>
+      <td>
+        The Vendor’s declared Purpose ID that the publisher has indicated
+        that they are overriding.
+      </td>
+    </tr>
+    <tr>
+      <td>RestrictionType</td>
+      <td>2 bits</td>
+      <td>
+        <p>
+          Enum
+        </p>
+        <p>
+          <code>0</code> Purpose Flatly Not Allowed by Publisher (regardless
+          of Vendor declarations)
+        </p>
+        <p>
+          <code>1</code> Require Consent (if Vendor has declared the Purpose
+          IDs legal basis as Legitimate Interest and flexible)
+        </p>
+        <p>
+          <code>2</code> Require Legitimate Interest (if Vendor has declared
+          the Purpose IDs legal basis as Consent and flexible)
+        </p>
+        <p><code>3</code> UNDEFINED (not used)</p>
+      </td>
+      <td>
+        <p>Vendors must always respect a <code>0</code> (Not Allowed)
+        regardless of whether or not they have not declared that Purpose to
+        be “flexible”. Values <code>1</code> and <code>2</code> are in
+        accordance with a vendor's declared flexibility. Eg. if a vendor has
+        Purpose 2 declared as Legitimate Interest but also declares that
+        Purpose as flexible and this field is set to <code>1</code>, they
+        must then check for the “consent” signal in the VendorConsents
+        section to make a determination on whether they have the legal basis
+        for processing user personal data under that Purpose.</p>
+        <p>When a vendor's Purpose registration <strong><em>is not flexible</em></strong> 
+        they should interpret this value in the following ways:</strong></p>
+        <p>If this value is <code>1</code> and vendor is registered under 
+        Legitimate Interest for that Purpose then the vendor <em>should not 
+        process</em> for that Purpose.</p>
+        <p>If this value is <code>1</code> and vendor is registered under Consent
+        for that Purpose then the vendor <em>can ignore</em> the signal.</p>
+        <p>If this value is <code>2</code> and vendor is registered under Consent 
+        for that Purpose then the vendor <em>should not process</em> for that Purpose.</p>
+        <p>If this value is <code>2</code> and vendor is registered under 
+        Legitimate Interest for that Purpose then the vendor <em>can ignore</em> the signal.</p>
+        <p>If this value is <code>1</code> or <code>2</code> and the vendor is not
+        registered for the Purpose then the vendor <em>should not process</em> for that Purpose.</p>
+        <p>
+          <strong>Note:</strong> Purpose 1 is always required to be
+          registered as a consent purpose and can not be flexible per
+          <a
+            href="https://iabeurope.eu/iab-europe-transparency-consent-framework-policies/"
+            >Policies</a
+          >.
+        </p>
+      </td>
+    </tr>
+    <tr style="border-top:2px solid black;">
+      <td>NumEntries</td>
+      <td>12 bits</td>
+      <td colspan="2">Number of RangeEntry sections to follow.</td>
+    </tr>
+    <tr style="border-top:5px double black;">
+      <td colspan="2">RangeEntry (repeated NumEntries times)</td>
+      <td colspan="2">
+        A single or range of Vendor ID(s) who the publisher has designated
+        as restricted under the Purpose ID in this PubRestrictionsEntry.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        IsARange
+      </td>
+      <td>1 bit</td>
+      <td>
+        <code>1</code> Vendor ID range<br />
+        <code>0</code> Single Vendor ID
+      </td>
+      <td>
+        If more than one Vendor ID is included in this RangeEntry then this
+        describes a range of Vendor IDs and this value is <code>1</code>. If
+        only one Vendor ID is included then the value is <code>0</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        StartOrOnlyVendorId
+      </td>
+      <td>16 bits</td>
+      <td>
+        The first ID of an inclusive contiguous ascending-order series of
+        Vendor IDs even if the series is only a cardinality of 1.
+      </td>
+      <td>
+        This is the first or only Vendor ID with this restriction in this
+        RangeEntry
+      </td>
+    </tr>
+    <tr>
+      <td>EndVendorId</td>
+      <td>16 bits</td>
+      <td>
+        The last ID of the inclusive contiguous ascending-order series of
+        Vendor IDs started with StartOrOnlyVendorId but only if that series
+        has a cardinality greater than 1, otherwise this field is omitted. Note that <em>contiguous</em> above permits encoding ranges that include deleted Vendors or cover gaps in GVL vendor IDs unlike other range encodings in this specification. For example, to encode a restriction for vendors [12, 15, 18, 24] if vendor IDs 13-14, 16-17, and 19-22 are not in the GVL and 23 is in the GVL but has a non-empty <code>deletedDate</code>, a range entry of 12-24 is permitted.
+      </td>
+      <td>
+        The end of the series of Vendor IDs – this is omitted if
+        <code>IsARange=0</code>.
+      </td>
+    </tr>
+    <tr style="border-bottom:5px double black;border-top:2px solid #999;">
+      <td colspan="4">
+        <strong>Repeated RangeEntry sections to NumEntries...</strong>
+      </td>
+    </tr>
+    <tr style="border-bottom:5px solid black;">
+      <td colspan="4">
+        <strong>Repeated PubRestrictionsEntry sections to NumPubRestrictions...</strong>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+#### Disclosed Vendors
+
+The _**DisclosedVendors**_ is an optional TC String segment that records which vendors have been disclosed to a given user by a CMP. It may be used by a CMP while [storing](#how-should-a-transparency--consent-string-be-stored) TC Strings, but must not be included in the TC String when returned by the CMP API.
+
+
+<table>
+  <thead>
+    <tr style="background-color:#000;color:#FFF;">
+      <td><strong>Field Name</strong></td>
+      <td><strong>Bits</strong></td>
+      <td><strong>Values</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SegmentType</td>
+      <td>3 bits</td>
+      <td>
+        <p>
+          Enum
+        </p>
+        <p><code>0</code> Default (<em>Core</em>)</p>
+        <p>
+          <strong><code>1</code> <em>DisclosedVendors</em></strong>
+        </p>
+        <p><code>3</code> PublisherTC</p>
+      </td>
+      <td>
+        <strong><em>DisclosedVendors</em></strong> segment is
+        <code>1</code> which is <code>001</code> in binary.
+      </td>
+    </tr>
+    <tr>
+      <td>MaxVendorId</td>
+      <td>16 bits</td>
+      <td>The maximum Vendor ID included in this encoding.</td>
+      <td>
+        Because this section can be a variable length, this indicates the
+        last ID of the section so that a decoder will know when it has
+        reached the end.
+      </td>
+    </tr>
+    <tr>
+      <td>IsRangeEncoding</td>
+      <td>1 bit</td>
+      <td>
+        <code>1</code> Range<br />
+        <code>0</code> BitField
+      </td>
+      <td>
+        The encoding scheme used to encode the IDs in the section – Either a
+        BitField Section or Range Section follows. Encoding logic should
+        choose the encoding scheme that results in the smaller output size
+        for a given set.
+      </td>
+    </tr>
+    <tr></tr>
+    <tr style="background-color:#999;">
+      <td colspan="2"><strong>BitField Section</strong></td>
+      <td colspan="2">
+        <strong>Encodes one disclosed vendor bit per Vendor ID</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>BitField</td>
+      <td>MaxVendorId bits</td>
+      <td>
+        <p>
+          One bit for each vendor
+        </p>
+        <p>
+          <code>1</code> Disclosed<br />
+          <code>0</code> Not Disclosed
+        </p>
+      </td>
+      <td>
+        The value for each Vendor ID from <code>1</code> to MaxVendorId.
+        <p>
+          Set the bit corresponding to a given vendor to <code>1</code> if
+          the CMP has disclosed the vendor in the UI.
+        </p>
+      </td>
+    </tr>
+    <tr style="background-color:#999;">
+      <td colspan="2"><strong>Range Section</strong></td>
+      <td colspan="2">
+        <strong>Encodes range groups of Vendor IDs who have been disclosed to a
+          user</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>NumEntries</td>
+      <td>12 bits</td>
+      <td colspan="2">Number of RangeEntry sections to follow</td>
+    </tr>
+    <tr style="border-top:5px solid black;">
+      <td colspan="2">RangeEntry (repeated NumEntries times)</td>
+      <td colspan="2">
+        A single or range of Vendor ID(s) of Vendor(s) who were disclosed in
+        a CMP UI to the user. If a Vendor ID is not within the bounds of the
+        ranges then they were not disclosed to the user.
+      </td>
+    </tr>
+    <tr>
+      <td>IsARange</td>
+      <td>1 bit</td>
+      <td>
+        <code>1</code> Vendor ID range<br />
+        <code>0</code> Single Vendor ID
+      </td>
+      <td>
+        If more than one Vendor ID is included in this RangeEntry then this
+        describes a range of Vendor IDs and this value is 1. If only one
+        Vendor ID is included then the value is <code>0</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>StartOrOnlyVendorId</td>
+      <td>16 bits</td>
+      <td>
+        The first ID of an inclusive contiguous ascending-order series of
+        Vendor IDs even if the series is only a cardinality of 1.
+      </td>
+      <td>
+        This is the first or only Vendor ID that has been disclosed in this
+        RangeEntry.
+      </td>
+    </tr>
+    <tr>
+      <td>EndVendorId</td>
+      <td>16 bits</td>
+      <td>
+        The last ID of the inclusive contiguous ascending-order series of
+        Vendor IDs started with StartOrOnlyVendorId but only if that series
+        has a cardinality greater than 1, otherwise this field is omitted.
+      </td>
+      <td>
+        The end of the series of Vendor IDs – this is omitted if
+        <code>IsARange=0</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+#### Publisher Purposes Transparency and Consent
+
+Publishers may need to establish transparency and consent for a set of personal data processing purposes for their own use. For example, a publisher that wants to set a frequency-capping first-party cookie should request user consent for Purpose 1 "Store and/or access information on a device" in jurisdictions where it is required.
+
+The _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment in the TC string represents the publisher's own transparency & consent signals and is separated from the general TC String segments. This segment supports the standard list of purposes defined by the TCF as well as Custom Purposes defined by the publisher if they so choose. Vendors should not rely on the _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment unless they're in agreement with the publisher to do so.
+
+
+<table>
+  <thead>
+    <tr style="background-color:#000;color:#FFF;">
+      <td><strong>Field Name</strong></td>
+      <td><strong>Bits</strong></td>
+      <td><strong>Values</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SegmentType</td>
+      <td>3 bits</td>
+      <td>
+        <p>
+          Enum
+        </p>
+        <p><code>0</code> Default (<em>Core</em>)</p>
+        <p><code>1</code> <em>DisclosedVendors</em></p>
+        <p>
+          <strong><code>3</code> PublisherTC</strong>
+        </p>
+      </td>
+      <td>
+        <strong><em>PublisherTC</em></strong> segment is 3 which is
+        <code>011</code> in binary.
+      </td>
+    </tr>
+    <tr>
+      <td>PubPurposesConsent</td>
+      <td>24 bits</td>
+      <td>
+        One bit for each Purpose:
+        <p>
+          <code>1</code> Consent<br />
+          <code>0</code> No Consent
+        </p>
+      </td>
+      <td>
+        The user's consent value for each Purpose established on the legal
+        basis of consent, for the publisher
+        <p>
+          The Purposes are numerically identified and published in the
+          <a href="#the-global-vendor-list">Global Vendor List</a>. From
+          left to right, Purpose 1 maps to the <code>0</code>th bit, purpose
+          24 maps to the bit at index 23.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>PubPurposesLITransparency</td>
+      <td>24 bits</td>
+      <td>
+        One bit for each Purpose:<br /><code>1</code> legitimate interest
+        established<br /><br /><code>0</code> legitimate interest was
+        <u><strong>NOT</strong></u> established or it was established but
+        user exercised their “Right to Object” to the Purpose
+      </td>
+      <td>
+        The Purpose’s transparency requirements are met for each Purpose
+        established on the legal basis of legitimate interest and the user
+        has not exercised their “Right to Object” to that Purpose.
+        <p>
+          By default or if the user has exercised their “Right to Object to
+          a Purpose, the corresponding bit for that purpose is set to
+          <code>0</code>. From left to right, Purpose 1 maps to the
+          <code>0</code>th bit, purpose 24 maps to the bit at index 23.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>NumCustomPurposes</td>
+      <td>6 bits</td>
+      <td>The number of Custom Purposes.</td>
+      <td>
+        Custom purpose IDs are numbered <code>1</code> to
+        NumberCustomPurposes. Custom purposes will be defined by the
+        publisher and displayed to a user in a CMP user interface.
+        <p>
+          If the publisher does not use any Custom Purposes, this field is
+          set to <code>0</code> and the following two fields will be
+          omitted.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>CustomPurposesConsent</td>
+      <td>NumCustomPurposes</td>
+      <td>
+        One bit for each Custom Purpose:
+        <p>
+          <code>1</code> Consent<br />
+          <code>0</code> No Consent
+        </p>
+      </td>
+      <td>
+        The consent value for each CustomPurposeId from 1 to
+        NumberCustomPurposes
+      </td>
+    </tr>
+    <tr>
+      <td>CustomPurposesLITransparency</td>
+      <td>NumCustomPurposes</td>
+      <td>
+        One bit for each Custom Purpose:<br /><code>1</code> legitimate
+        interest established<br /><br /><code>0</code> legitimate interest
+        was <u><strong>NOT</strong></u> established or it was established
+        but user exercised their “Right to Object” to the Custom Purpose
+      </td>
+      <td>
+        The legitimate Interest disclosure establishment value for each
+        CustomPurposeId from <code>1</code> to NumberCustomPurposes
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 ## The Global Vendor List
 
 The Global Vendor List (GVL) is a technical document that CMPs download from a domain managed and published by IAB Europe. It lists all registered and approved Vendors, as well as standard Purposes, Special Purposes, Features, Special Features and Stacks. The information stored in the GVL is used for determining what legal disclosures must be made to the user.
