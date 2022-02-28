@@ -30,10 +30,13 @@
  * [Creating a TC String](#creating-a-tc-string)
    + [How should a Transparency & Consent String be stored?](#how-should-a-transparency--consent-string-be-stored)
    + [What are the Purposes and Features being supported?](#what-are-the-purposes-and-features-being-supported)
-   + [TC String Format](#tc-string-format)
-     - [The Core String](#the-core-string)
-     - [Disclosed Vendors](#disclosed-vendors)
-     - [Publisher Purposes Transparency and Consent](#publisher-purposes-transparency-and-consent)
+   + [TC String Format (EU)](#tc-string-format-eu)
+     - [The Core String](#the-core-string-eu)
+     - [Disclosed Vendors](#disclosed-vendors-eu)
+     - [Publisher Purposes Transparency and Consent](#publisher-purposes-transparency-and-consent-eu)
+   + [TC String Format (Canada)](#tc-string-format-canada)
+     - [The Core String](#the-core-string-canada)
+     - [Publisher Purposes Transparency and Consent](#publisher-purposes-transparency-and-consent-canada)
  * [The Global Vendor List](#the-global-vendor-list)
    + [I’m a vendor, how do I get added to the Global Vendor List?](#im-a-vendor-how-do-i-get-added-to-the-global-vendor-list)
    + [What is contained in the Global Vendor List?](#what-is-contained-in-the-global-vendor-list)
@@ -361,26 +364,26 @@ Note: TCF version 2.0 introduces [“Publisher Restrictions”](#what-are-publis
 
 ### TC String Format (EU)
 
-There are 3 distincts TC String segments that are joined together on a “dot” character.  They are:
+There are 3 distinct TC String segments that are joined together on a “dot” character. They are:
 
 *   The core vendor transparency and consent details
 *   Disclosed vendors
 *   Publisher purposes transparency and consent for their own data uses.
 
-The _**[Core String](#the-core-string)**_ is always required and comes first and includes all the details required for communicating basic vendor transparency and consent.
+The _**[Core String](#the-core-string-eu)**_ is always required and comes first and includes all the details required for communicating basic vendor transparency and consent.
 
 ```
 COw4XqLOw4XqLAAAAAENAXCAAAAAAAAAAAAAAAAAAAAA.IFukWSQgAIQwgI0QEByFAAAAeIAACAIgSAAQAIAgEQACEABAAAgAQFAEAIAAAGBAAgAAAAQAIFAAMCQAAgAAQiRAEQAAAAANAAIAAggAIYQFAAARmggBC3ZCYzU2yIA.QFukWSQgAIQwgI0QEByFAAAAeIAACAIgSAAQAIAgEQACEABAAAgAQFAEAIAAAGBAAgAAAAQAIFAAMCQAAgAAQiRAEQAAAAANAAIAAggAIYQFAAARmggBC3ZCYzU2yIA.YAAAAAAAAAAAAAAAAAA
 ```
-A TC String must contain a Core TC String and may optionally contain a _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment :
+A TC String must contain a Core TC String and may optionally contain a _**[Publisher TC](#publisher-purposes-transparency-and-consent-eu)**_ segment :
 
-[ _**[Core String](#the-core-string)**_ ].[ _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ ]
+[ _**[Core String](#the-core-string-eu)**_ ].[ _**[Publisher TC](#publisher-purposes-transparency-and-consent-eu)**_ ]
 
 ```
 CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEgAA.argAC0gAAAAAAAAAAAA
 ```
 
- #### The Core String
+ #### The Core String (EU)
 
  The following fields are stored in big-endian format. Bit numberings are left-to-right.
 
@@ -1038,7 +1041,7 @@ CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEg
   </tbody>
 </table>
 
-#### Disclosed Vendors
+#### Disclosed Vendors (EU)
 
 The _**DisclosedVendors**_ is an optional TC String segment that records which vendors have been disclosed to a given user by a CMP. It may be used by a CMP while [storing](#how-should-a-transparency--consent-string-be-stored) TC Strings, but must not be included in the TC String when returned by the CMP API.
 
@@ -1184,11 +1187,11 @@ The _**DisclosedVendors**_ is an optional TC String segment that records which v
   </tbody>
 </table>
 
-#### Publisher Purposes Transparency and Consent
+#### Publisher Purposes Transparency and Consent (EU)
 
 Publishers may need to establish transparency and consent for a set of personal data processing purposes for their own use. For example, a publisher that wants to set a frequency-capping first-party cookie should request user consent for Purpose 1 "Store and/or access information on a device" in jurisdictions where it is required.
 
-The _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment in the TC string represents the publisher's own transparency & consent signals and is separated from the general TC String segments. This segment supports the standard list of purposes defined by the TCF as well as Custom Purposes defined by the publisher if they so choose. Vendors should not rely on the _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment unless they're in agreement with the publisher to do so.
+The _**[Publisher TC](#publisher-purposes-transparency-and-consent-eu)**_ segment in the TC string represents the publisher's own transparency & consent signals and is separated from the general TC String segments. This segment supports the standard list of purposes defined by the TCF as well as Custom Purposes defined by the publisher if they so choose. Vendors should not rely on the _**[Publisher TC](#publisher-purposes-transparency-and-consent-eu)**_ segment unless they're in agreement with the publisher to do so.
 
 
 <table>
@@ -1310,26 +1313,25 @@ The _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment i
 
 ### TC String Format (Canada)
 
-There are 3 distincts TC String segments that are joined together on a “dot” character.  They are:
+There are 2 distinct TC String segments that are joined together on a “dot” character.  They are:
 
 *   The core vendor transparency and consent details
-*   Disclosed vendors
 *   Publisher purposes transparency and consent for their own data uses.
 
-The _**[Core String](#the-core-string)**_ is always required and comes first and includes all the details required for communicating basic vendor transparency and consent.
+The _**[Core String](#the-core-string-canada)**_ is always required and comes first and includes all the details required for communicating basic vendor transparency and consent.
 
 ```
-COw4XqLOw4XqLAAAAAENAXCAAAAAAAAAAAAAAAAAAAAA.IFukWSQgAIQwgI0QEByFAAAAeIAACAIgSAAQAIAgEQACEABAAAgAQFAEAIAAAGBAAgAAAAQAIFAAMCQAAgAAQiRAEQAAAAANAAIAAggAIYQFAAARmggBC3ZCYzU2yIA.QFukWSQgAIQwgI0QEByFAAAAeIAACAIgSAAQAIAgEQACEABAAAgAQFAEAIAAAGBAAgAAAAQAIFAAMCQAAgAAQiRAEQAAAAANAAIAAggAIYQFAAARmggBC3ZCYzU2yIA.YAAAAAAAAAAAAAAAAAA
+COw4XqLOw4XqLAAAAAENAXCAAAAAAAAAAAAAAAAAAAAA.YAAAAAAAAAAAAAAAAAA
 ```
-A TC String must contain a Core TC String and may optionally contain a _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment :
+A TC String must contain a Core TC String and may optionally contain a _**[Publisher TC](#publisher-purposes-transparency-and-consent-canada)**_ segment :
 
-[ _**[Core String](#the-core-string)**_ ].[ _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ ]
+[ _**[Core String](#the-core-string-canada)**_ ].[ _**[Publisher TC](#publisher-purposes-transparency-and-consent-canada)**_ ]
 
 ```
 CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEgAA.argAC0gAAAAAAAAAAAA
 ```
 
- #### The Core String
+ #### The Core String (Canada)
 
  The following fields are stored in big-endian format. Bit numberings are left-to-right.
 
@@ -1777,11 +1779,11 @@ CLcVDxRMWfGmWAVAHCENAXCkAKDAADnAABRgA5mdfCKZuYJez-NQm0TBMYA4oCAAGQYIAAAAAAEAIAEg
   </tbody>
 </table>
 
-#### Publisher Purposes Transparency and Consent
+#### Publisher Purposes Transparency and Consent (Canada)
 
 Publishers may need to establish transparency and consent for a set of personal data processing purposes for their own use. For example, a publisher that wants to set a frequency-capping first-party cookie should request user consent for Purpose 1 "Store and/or access information on a device" in jurisdictions where it is required.
 
-The _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment in the TC string represents the publisher's own transparency & consent signals and is separated from the general TC String segments. This segment supports the standard list of purposes defined by the TCF as well as Custom Purposes defined by the publisher if they so choose. Vendors should not rely on the _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment unless they're in agreement with the publisher to do so.
+The _**[Publisher TC](#publisher-purposes-transparency-and-consent-canada)**_ segment in the TC string represents the publisher's own transparency & consent signals and is separated from the general TC String segments. This segment supports the standard list of purposes defined by the TCF as well as Custom Purposes defined by the publisher if they so choose. Vendors should not rely on the _**[Publisher TC](#publisher-purposes-transparency-and-consent-canada)**_ segment unless they're in agreement with the publisher to do so.
 
 
 <table>
@@ -1920,10 +1922,10 @@ The registration process is described here: [https://iabeurope.eu/tcf](https://i
 *   A list of Vendors and their:
     *   Numeric ID which is incrementally assigned and never re-used – deleted Vendors are just marked as deleted.
     *   Name.
-    *   List of Purposes for which they are requesting consent.
-    *   List of Purposes for which they require to be transparently disclosed as their legitimate interest.
-    *   List of Purposes they have the flexibility to either use a consent or a legitimate interest legal basis.
-    *   List of Special Purposes to transparently disclose as their legitimate interest that a user has no right to object.
+    *   List of Purposes for which they are requesting consent (:loudspeaker: express consent for Canada).
+    *   List of Purposes for which they require to be transparently disclosed as their legitimate interest (:loudspeaker: implied consent for Canada).
+    *   List of Purposes they have the flexibility to either use a consent (:loudspeaker: express consent for Canada) or a legitimate interest (:loudspeaker: implied consent for Canada) legal basis.
+    *   List of Special Purposes to transparently disclose as their legitimate interest (:loudspeaker: implied consent for Canada) that a user has no right to object.
     *   List of Features they use across Purposes.
     *   List of Special Features they use across Purposes.
     *   GDPR/privacy policy page URL.
@@ -1934,11 +1936,15 @@ The registration process is described here: [https://iabeurope.eu/tcf](https://i
 
 The GVL is in JSON format and the current version at any given time can be retrieved using the following URL structure:
 
-[https://vendor-list.consensu.org/v2/vendor-list.json](https://vendor-list.consensu.org/v2/vendor-list.json)
+**EU:** [https://vendor-list.consensu.org/v2/vendor-list.json](https://vendor-list.consensu.org/v2/vendor-list.json)
+
+**Canada:** [https://vendor-list.consensu.org/v2/ca/vendor-list.json](https://vendor-list.consensu.org/v2/ca/vendor-list.json)
 
 Previous versions of the Global Vendor List are available here:
 
-[https://vendor-list.consensu.org/v2/archives/vendor-list-v{vendor-list-version}.json](https://vendor-list.consensu.org/v2/archives/vendorlist-v{vendor-list-version}.json)
+**EU:** [https://vendor-list.consensu.org/v2/archives/vendor-list-v{vendor-list-version}.json](https://vendor-list.consensu.org/v2/archives/vendorlist-v{vendor-list-version}.json)
+
+**Canada:** [https://vendor-list.consensu.org/v2/ca/archives/vendor-list-v{vendor-list-version}.json](https://vendor-list.consensu.org/v2/ca/archives/vendorlist-v{vendor-list-version}.json)
 
 Where ‘vendor-list-version’ corresponds to the ‘vendorListVersion’ property in the GVL, for example, the following URL would retrieve the GVL update published with version 138
 
@@ -2248,8 +2254,9 @@ IMPORTANT NOTE: all CMPs that have registered with the TCF are listed in these f
 ### Where can I access the Global CMP List?
 The GCL is in JSON format and the current version at any given time can be retrieved using the following URL:
 
-v2: https://cmplist.consensu.org/v2/cmp-list.json
-v1: https://cmplist.consensu.org/cmp-list.json
+**EU**: https://cmplist.consensu.org/v2/cmp-list.json
+
+**Canada**: https://cmplist.consensu.org/v2/ca/cmp-list.json
 
 ### How often is the Global CMP List updated?
 As of the publication of this document, changes to the Global CMP List are published weekly at 5:00 PM Central European Time on Thursdays. IAB Europe reserves the right to change this time and will notify members of any changes.
